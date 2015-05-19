@@ -55,3 +55,12 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# PyCharm
+*.iml
+.idea/
+*.ipr
+*.iws
+out/
+.idea_modules/
+
