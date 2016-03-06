@@ -95,6 +95,8 @@ DFAFilter with CPython 2.7.10
 DFAFilter with PyPy 4.0.1(2.7.10)
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. code-block:: shell
+
     $ pypy -m timeit -s "import hgfw; f = hgfw.DFAFilter.default()" "f.contains(u'测试字符串：在当前的形势下，我们要更加积极的举报黄色网站。')"
     1000000 loops, best of 3: 0.576 usec per loop
 
@@ -106,6 +108,8 @@ DFAFilter with PyPy 4.0.1(2.7.10)
 
 DAWGFilter with CPython 2.7.10
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: shell
 
     $ python -m timeit -s "import hgfw; f = hgfw.DAWGFilter.default()" "f.contains(u'测试字符串：在当前的形势下，我们要更加积极的举报黄色网站。')"
     10000 loops, best of 3: 20.5 usec per loop
