@@ -93,7 +93,7 @@ DFAFilter with CPython 2.7.10
 
 
 DFAFilter with PyPy 4.0.1(2.7.10)
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: shell
 
