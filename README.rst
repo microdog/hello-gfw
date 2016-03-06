@@ -56,36 +56,78 @@ Replace
     >> words_filter.replace(u'There is a keyword.', u'*')
     u'There is a *******.'
 
+Implementations
+~~~~~~~~~~~~~~~
+
+Starting from version 0.1, two implementations of Filter are provided: DAWGFilter, DFAFilter(default).
+DFAFilter is written in pure Python and has a better performance than DAWGFilter, especially in PyPy.
+
+.. code-block:: python
+
+    >> default_filter = Filter.default()
+    >> dawg_filter = DAWGFilter.default()
+    >> dfa_filter = DFAFilter.default()
+
+.. note::
+
+    If you want to use DAWGFilter, you need to install `DAWG <https://pypi.python.org/pypi/DAWG>`_ dependency.
+
 Performance
 -----------
 
-Python 2.7.8, MacBook Pro (Retina, 15-inch, Late 2013), 2.3 GHz Intel Core i7
+Fedora 23, Intel® Core™ i7-4790 CPU
+
+DFAFilter with CPython 2.7.10
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: shell
 
-    $ ./env/bin/python -m timeit -s "import hgfw; f = hgfw.Filter.default()" "f.contains(u'测试字符串：在当前的形势下，我们要更加积极的举报黄色网站。')"
-    10000 loops, best of 3: 24.7 usec per loop
+    $ python -m timeit -s "import hgfw; f = hgfw.DFAFilter.default()" "f.contains(u'测试字符串：在当前的形势下，我们要更加积极的举报黄色网站。')"
+    100000 loops, best of 3: 11.7 usec per loop
 
-    $ ./env/bin/python -m timeit -s "import hgfw; f = hgfw.Filter.default()" "f.search(u'测试字符串：在当前的形势下，我们要更加积极的举报黄色网站。')"
-    10000 loops, best of 3: 25.3 usec per loop
+    $ python -m timeit -s "import hgfw; f = hgfw.DFAFilter.default()" "f.search(u'测试字符串：在当前的形势下，我们要更加积极的举报黄色网站。')"
+    100000 loops, best of 3: 11.8 usec per loop
 
-    $ ./env/bin/python -m timeit -s "import hgfw; f = hgfw.Filter.default()" "f.replace(u'测试字符串：在当前的形势下，我们要更加积极的举报黄色网站。')"
-    10000 loops, best of 3: 34.5 usec per loop
+    $ python -m timeit -s "import hgfw; f = hgfw.DFAFilter.default()" "f.replace(u'测试字符串：在当前的形势下，我们要更加积极的举报黄色网站。')"
+    100000 loops, best of 3: 12.1 usec per loop
+
+
+DFAFilter with PyPy 4.0.1(2.7.10)
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    $ pypy -m timeit -s "import hgfw; f = hgfw.DFAFilter.default()" "f.contains(u'测试字符串：在当前的形势下，我们要更加积极的举报黄色网站。')"
+    1000000 loops, best of 3: 0.576 usec per loop
+
+    $ pypy -m timeit -s "import hgfw; f = hgfw.DFAFilter.default()" "f.search(u'测试字符串：在当前的形势下，我们要更加积极的举报黄色网站。')"
+    1000000 loops, best of 3: 0.572 usec per loop
+
+    $ pypy -m timeit -s "import hgfw; f = hgfw.DFAFilter.default()" "f.replace(u'测试字符串：在当前的形势下，我们要更加积极的举报黄色网站。')"
+    1000000 loops, best of 3: 0.586 usec per loop
+
+DAWGFilter with CPython 2.7.10
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    $ python -m timeit -s "import hgfw; f = hgfw.DAWGFilter.default()" "f.contains(u'测试字符串：在当前的形势下，我们要更加积极的举报黄色网站。')"
+    10000 loops, best of 3: 20.5 usec per loop
+
+    $ python -m timeit -s "import hgfw; f = hgfw.DAWGFilter.default()" "f.search(u'测试字符串：在当前的形势下，我们要更加积极的举报黄色网站。')"
+    10000 loops, best of 3: 20.6 usec per loop
+
+    $ python -m timeit -s "import hgfw; f = hgfw.DAWGFilter.default()" "f.replace(u'测试字符串：在当前的形势下，我们要更加积极的举报黄色网站。')"
+    10000 loops, best of 3: 29.7 usec per loop
 
 TODO
 ----
 
 * Optimize matching algorithm
-* Add the ability to share data between processes
 * Provide higher-quality dictionaries
-* Provide different dictionary for `contains`, `search` and `replace`
 
 License
 -------
 
 The MIT License (MIT)
 
-Copyright (c) 2015 Microdog
+Copyright (c) 2016 Microdog
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
