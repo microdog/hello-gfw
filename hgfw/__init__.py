@@ -24,7 +24,6 @@ class Filter(object):
         else:
             impl = cls
         instance = super(Filter, cls).__new__(impl)
-        instance.__init__(*args, **kwargs)
         return instance
 
     @classmethod
@@ -150,7 +149,7 @@ class DFAFilter(Filter):
     def reload_words(self, words, keep_words=True):
         self.data = {}
         if keep_words:
-            self.words = list(words)
+            self.words = set(words)
             self.set(self.words)
         else:
             self.words = None
@@ -173,7 +172,7 @@ class DFAFilter(Filter):
             offset += 1
             if self.ENDING_CHAR in node:
                 if not callback(start, offset, text[start:start + offset]):
-                    break
+                    return
                 node = self.data
                 start += offset
                 offset = 0
@@ -186,7 +185,7 @@ class DFAFilter(Filter):
             return False
 
         self._perform(text, callback)
-        return bool(results)
+        return len(results) != 0
 
     def search(self, text):
         results = []
